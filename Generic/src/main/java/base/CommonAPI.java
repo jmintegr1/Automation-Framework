@@ -37,11 +37,12 @@ import java.util.concurrent.TimeUnit;
 
 public class CommonAPI {
     //ExtentReport
+    //ExtentReport
     public static ExtentReports extent;
     @BeforeSuite
     public void extentSetup(ITestContext context) {
         ExtentManager.setOutputDirectory(context);
-        extent = ExtentManager.getInstance();
+        extent=ExtentManager.getInstance();
     }
     @BeforeMethod
     public void startExtent(Method method) {
@@ -90,8 +91,8 @@ public class CommonAPI {
     }
 
     public WebDriver driver = null;
-    public String browserstack_username= "Asif T Chowdhury";
-    public String browserstack_accesskey = "3476562393";
+    public String browserstack_username= "";
+    public String browserstack_accesskey = "";
     public String saucelabs_username = "";
     public String saucelabs_accesskey = "";
 
@@ -99,8 +100,8 @@ public class CommonAPI {
     @BeforeMethod
     public void setUp(@Optional("false") boolean useCloudEnv, @Optional("false")String cloudEnvName,
                       @Optional("OS X") String os,@Optional("10") String os_version, @Optional("chrome-options") String browserName, @Optional("34")
-                              String browserVersion, @Optional("http://www.bankofamerica.com") String url)throws IOException {
-        System.setProperty("webdriver.chrome.driver", "/Users/asifchowdhury/Desktop/BankWeb/BnkOfAm/driver/chromedriver");
+                              String browserVersion, @Optional("http://www.amazon.com") String url)throws IOException {
+        System.setProperty("webdriver.chrome.driver", "/Users/peoplentech/eclipse-workspace-March2018/SeleniumProject1/driver/chromedriver");
         if(useCloudEnv==true){
             if(cloudEnvName.equalsIgnoreCase("browserstack")) {
                 getCloudDriver(cloudEnvName,browserstack_username,browserstack_accesskey,os,os_version, browserName, browserVersion);
@@ -110,36 +111,35 @@ public class CommonAPI {
         }else{
             getLocalDriver(os, browserName);
         }
-        driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
+        driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
         driver.manage().timeouts().pageLoadTimeout(25, TimeUnit.SECONDS);
         driver.get(url);
         driver.manage().window().maximize();
-        driver.manage().window().fullscreen();
     }
     public WebDriver getLocalDriver(@Optional("mac") String OS, String browserName){
         if(browserName.equalsIgnoreCase("chrome")){
             if(OS.equalsIgnoreCase("OS X")){
-                System.setProperty("webdriver.chrome.driver", "/Users/asifchowdhury/Desktop/BankWeb/BankofAmerica/driver/chromedriver");
+                System.setProperty("webdriver.chrome.driver", "../Generic/browser-driver/chromedriver");
             }else if(OS.equalsIgnoreCase("Windows")){
-                System.setProperty("webdriver.chrome.driver", "/Users/asifchowdhury/Desktop/BankWeb/BankofAmerica/driver/chromedriver");
+                System.setProperty("webdriver.chrome.driver", "../Generic/browser-driver/chromedriver.exe");
             }
             driver = new ChromeDriver();
         } else if(browserName.equalsIgnoreCase("chrome-options")){
             ChromeOptions options = new ChromeOptions();
             options.addArguments("--disable-notifications");
             if(OS.equalsIgnoreCase("OS X")){
-                System.setProperty("webdriver.chrome.driver", "/Users/asifchowdhury/Desktop/BankWeb/Generic/driver/chromedriver");
+                System.setProperty("webdriver.chrome.driver", "../Generic/browser-driver/chromedriver");
             }else if(OS.equalsIgnoreCase("Windows")){
-                System.setProperty("webdriver.chrome.driver", "/Users/asifchowdhury/Desktop/BankWeb/Generic/driver/chromedriver");
+                System.setProperty("webdriver.chrome.driver", "../Generic/browser-driver/chromedriver.exe");
             }
             driver = new ChromeDriver(options);
         }
 
         else if(browserName.equalsIgnoreCase("firefox")){
             if(OS.equalsIgnoreCase("OS X")){
-                System.setProperty("webdriver.gecko.driver", "../BankofAmerica/driver/geckodriver");
+                System.setProperty("webdriver.gecko.driver", "../Generic/browser-driver/geckodriver");
             }else if(OS.equalsIgnoreCase("Windows")) {
-                System.setProperty("webdriver.gecko.driver", "../BankofAmerica/driver/geckodriver.exe");
+                System.setProperty("webdriver.gecko.driver", "../Generic/browser-driver/geckodriver.exe");
             }
             driver = new FirefoxDriver();
 
@@ -148,6 +148,7 @@ public class CommonAPI {
             driver = new InternetExplorerDriver();
         }
         return driver;
+
     }
 
     public WebDriver getCloudDriver(String envName,String envUsername, String envAccessKey,String os, String os_version,String browserName,
@@ -171,7 +172,7 @@ public class CommonAPI {
 
     @AfterMethod
     public void cleanUp(){
-        driver.close();
+        // driver.close();
     }
 
     public void clickOnCss(String locator){
@@ -286,7 +287,7 @@ public class CommonAPI {
         select.selectByVisibleText(value);
     }
     public static void sleepFor(int sec)throws InterruptedException{
-        Thread.sleep(sec * 2000);
+        Thread.sleep(sec * 1000);
     }
     public void mouseHoverByCSS(String locator){
         try {
@@ -298,7 +299,9 @@ public class CommonAPI {
             WebElement element = driver.findElement(By.cssSelector(locator));
             Actions action = new Actions(driver);
             action.moveToElement(element).perform();
+
         }
+
     }
     public void mouseHoverByXpath(String locator){
         try {
@@ -310,8 +313,11 @@ public class CommonAPI {
             WebElement element = driver.findElement(By.cssSelector(locator));
             Actions action = new Actions(driver);
             action.moveToElement(element).perform();
+
         }
+
     }
+    //handling Alert
     public void okAlert(){
         Alert alert = driver.switchTo().alert();
         alert.accept();
@@ -321,6 +327,7 @@ public class CommonAPI {
         alert.dismiss();
     }
 
+    //iFrame Handle
     public void iframeHandle(WebElement element){
         driver.switchTo().frame(element);
     }
@@ -329,6 +336,7 @@ public class CommonAPI {
         driver.switchTo().defaultContent();
     }
 
+    //get Links
     public void getLinks(String locator){
         driver.findElement(By.linkText(locator)).findElement(By.tagName("a")).getText();
     }
@@ -345,11 +353,14 @@ public class CommonAPI {
         } catch (Exception e) {
             System.out.println("Exception while taking screenshot "+e.getMessage());;
         }
+
     }
+    //Taking Screen shots
     public void takeScreenShot()throws IOException {
         File file = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
         FileUtils.copyFile(file,new File("screenShots.png"));
     }
+    //Synchronization
     public void waitUntilClickAble(By locator){
         WebDriverWait wait = new WebDriverWait(driver, 10);
         WebElement element = wait.until(ExpectedConditions.elementToBeClickable(locator));
@@ -364,6 +375,9 @@ public class CommonAPI {
     }
     public void upLoadFile(String locator,String path){
         driver.findElement(By.cssSelector(locator)).sendKeys(path);
+        /* path example to upload a file/image
+           path= "C:\\Users\\rrt\\Pictures\\ds1.png";
+         */
     }
     public void clearInput(String locator){
         driver.findElement(By.cssSelector(locator)).clear();
@@ -376,6 +390,7 @@ public class CommonAPI {
         splitString = StringUtils.join(StringUtils.splitByCharacterTypeCamelCase(st), ' ');
         return splitString;
     }
+    //Handling New Tabs
     public static WebDriver handleNewTab(WebDriver driver1){
         String oldTab = driver1.getWindowHandle();
         List<String> newTabs = new ArrayList<String>(driver1.getWindowHandles());

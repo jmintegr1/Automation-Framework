@@ -9,10 +9,10 @@ public class ShoppingCartTest extends TargetShoppingCart {
 
     TargetShoppingCart ObjShoppingCart;
 
-    /*@BeforeMethod
+    @BeforeMethod
     public void init (){
         ObjShoppingCart = PageFactory.initElements(driver, TargetShoppingCart.class);
-    }*/
+    }
 
     @Test
     public void ClickOnShoppingCart(){
@@ -34,6 +34,4 @@ public class ShoppingCartTest extends TargetShoppingCart {
     public void ClickShippingToStore(){
         clickOnOrderIncludesAGift();
     }
-
-
 }
