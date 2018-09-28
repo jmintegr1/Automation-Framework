@@ -9,7 +9,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>TargetAPP</artifactId>
+    <artifactId>Generic</artifactId>
 <dependencies>
     <dependency>
         <groupId>org.seleniumhq.selenium</groupId>
@@ -24,21 +24,18 @@
         <artifactId>testng</artifactId>
     </dependency>
     <dependency>
-        <groupId>AutomatedWeb</groupId>
+        <groupId>com.aventstack</groupId>
+        <artifactId>extentreports</artifactId>
+    </dependency>
+    <dependency>
+        <groupId>com.relevantcodes</groupId>
+        <artifactId>extentreports</artifactId>
+        <version>2.41.1</version>
+    </dependency>
+    <dependency>
+        <groupId>AutomateTheWeb</groupId>
         <artifactId>Generic</artifactId>
         <version>1.0-SNAPSHOT</version>
-    </dependency>
-    <dependency>
-        <groupId>org.testng</groupId>
-        <artifactId>testng</artifactId>
-        <version>6.14.3</version>
-        <scope>test</scope>
-    </dependency>
-    <dependency>
-        <groupId>org.testng</groupId>
-        <artifactId>testng</artifactId>
-        <version>6.14.3</version>
-        <scope>test</scope>
     </dependency>
 </dependencies>
 
